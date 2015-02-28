@@ -1,0 +1,6 @@
+html
+  head
+  body
+    h1(class=data.isPublic ? "public" : "", class=data.isDefault ? "default" : "")= data.name
+      each method in data.methods
+        h2(class=method.isConstructor ? "constructor" : "", class=method.isStatic ? "static" : "", class=method.isGetter ? "getter" : "", class=method.isSetter ? "setter" : "", class=method.isGenerator ? "generator" : "")= method.name

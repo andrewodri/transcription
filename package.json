@@ -1,0 +1,35 @@
+{
+  "name": "transcription",
+  "version": "0.1.0",
+  "description": "Documentation generator for ES6.",
+  "keywords": [
+    "transcription",
+    "documentation",
+    "ecmascript6"
+  ],
+  "homepage": "https://github.com/affirmix/transcription",
+  "bugs": {
+    "url": "https://github.com/affirmix/transcription/issues"
+  },
+  "license": "MIT",
+  "author": "Andrew Odri <andrew@affirmix.com> (http://affirmix.com)",
+  "main": "dist/app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/affirmix/transcription.git"
+  },
+  "devDependencies": {
+    "babel": "^4.6.1",
+    "gulp": "^3.8.11",
+    "gulp-babel": "^4.0.0",
+    "fs": "^0.0.2",
+    "util": "^0.10.3",
+    "acorn": "^0.11.0",
+    "doctrine": "^0.6.4",
+    "jade": "^1.9.2"
+  },
+  "jspm": {
+    "dependencies": {
+    }
+  }
+}
