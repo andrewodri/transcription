@@ -2,6 +2,7 @@ import fs from 'fs';
 import util from 'util';
 import acorn from 'acorn';
 import doctrine from 'doctrine';
+import markdown from 'markdown';
 
 export default class Parser {
   constructor(filePath) {
@@ -20,7 +21,7 @@ export default class Parser {
 
     //console.log(util.inspect(this.ast.body, false, 5));
 
-    console.log(util.inspect(this.transform(this.ast.body), false, 10));
+    //console.log(util.inspect(this.transform(this.ast.body), false, 10));
 
     //console.log(comments);
 
@@ -88,6 +89,8 @@ export default class Parser {
         unwrap: true,
         recoverable: true
       });
+
+      comments.parsed = markdown.markdown.toHTML(comments.description);
 
       this.currentComment = this.comments.next();
 

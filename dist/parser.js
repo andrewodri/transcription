@@ -14,6 +14,8 @@ var acorn = _interopRequire(require("acorn"));
 
 var doctrine = _interopRequire(require("doctrine"));
 
+var markdown = _interopRequire(require("markdown"));
+
 var Parser = (function () {
   function Parser(filePath) {
     _classCallCheck(this, Parser);
@@ -35,7 +37,7 @@ var Parser = (function () {
 
     //console.log(util.inspect(this.ast.body, false, 5));
 
-    console.log(util.inspect(this.transform(this.ast.body), false, 10));
+    //console.log(util.inspect(this.transform(this.ast.body), false, 10));
 
     //console.log(comments);
 
@@ -131,6 +133,8 @@ var Parser = (function () {
             unwrap: true,
             recoverable: true
           });
+
+          comments.parsed = markdown.markdown.toHTML(comments.description);
 
           this.currentComment = this.comments.next();
 

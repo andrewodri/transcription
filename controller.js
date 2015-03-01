@@ -10,29 +10,28 @@
  */
 export class Controller {
 	/**
+	 * This returns a reference that whatever the top-most sub-class is, which comes in handy when managing instances in static functions on classes that are designed to be extended.
+	 *
 	 * @static
 	 * @property {Class} classReference Reference to the current class
-	 *
-	 * This returns a reference that whatever the top-most sub-class is, which comes in handy when managing instances in static functions on classes that are designed to be extended.
 	 */
 	static get classReference() { return eval(this.name); }
 
 	/**
-	 * @property {Class} classReference Reference to the current class
-	 *
 	 * This returns a reference that whatever the top-most sub-class is, which comes in handy when managing instances in static functions on classes that are designed to be extended.
+	 *
+	 * @property {Class} classReference Reference to the current class
 	 */
 	get classReference() { return eval(this.constructor.name); }
 
 	/**
-	 * @property {Object} defaults The properties of this object will be merged into the controller itself, providing default values for the controller
-	 *
 	 * Defines default properties that will be merged into each controller instance by default.
 	 *
 	 * Due to the lack of support for class properties in ECMAScript 6, properties have been defined in getters, which are then merged with thier super functions by the constructor.
 	 *
 	 * Below is an example of a standard override of defaults that merges with it's sub class:
 	 *
+	 * ```
 	 *	get defaults() {
 	 *		return {
 	 *			selectors : {
@@ -47,21 +46,22 @@ export class Controller {
 	 *			}
 	 *		};
 	 *	}
+	 * ```
 	 *
 	 * These properties can be accessed straight from controller instance itself. For example, to access selectors.displayElement defined in the above example, you would reference it with `controllerInstance.selectors.displayElement`. See the demo application for an example implementation.
+	 *
+	 * @property {Object} defaults The properties of this object will be merged into the controller itself, providing default values for the controller
 	 */
 	get defaults() { return {}; }
 
 	/**
-	 * @todo In each listener object, separate the event from the selector and give it it's own event property
-	 * @property {Array} listeners An array of objects that represent DOM query selectors, events, and callback functions for DOM event binding on the controller
-	 *
 	 * Defines the listener object which will be parsed through and then bound during construction. See the demo application for an example implementation.
 	 *
 	 * Due to the lack of support for class properties in ECMAScript 6, properties have been defined in getters, which are then merged with thier super functions by the constructor.
 	 *
 	 * Below is an example of a standard override of defaults that merges with it's sub class:
 	 *
+	 * ```
 	 *	get listeners() {
 	 *		return [
 	 *			{ selector : '{selectors.searchButton} click', handler : this.example }
@@ -69,14 +69,14 @@ export class Controller {
 	 *			,{ selector : 'click', handler : this.example }
 	 *		];
 	 *	}
+	 * ```
+	 *
+	 * @todo In each listener object, separate the event from the selector and give it it's own event property
+	 * @property {Array} listeners An array of objects that represent DOM query selectors, events, and callback functions for DOM event binding on the controller
 	 */
 	get listeners() { return []; }
 
 	/**
-	 * @todo Investigate whether re-triggering ready and load events will cause issues
-	 * @param {DOMElement} context Element that the controller will be bound to and use as it's scope
-	 * @returns {Controller} Instance of the controller object
-	 *
 	 * The first thing the contructor does is merge this.defaults and this.listeners with the values defined in each super class. "Private" variables are created for acess within the constructor.
 	 *
 	 * Then, the element property of the controller is set to a jQuery object of the context. This will provide access to the jQuery function easily, and allow for easy referencing through the controller.
@@ -88,6 +88,10 @@ export class Controller {
 	 * In non-native ECMAScript 6 browsers, the code is often processed after document ready and load events are fired, so if these have been missed, they are triggered again.
 	 *
 	 * After all the processing is complete, the initialize function is called. This allows sub classes to perform thier own initialization after the core controller initialization has taken place in the constructor without having to explicitly call the constructor's. See the demo application for an example implementation.
+	 *
+	 * @todo Investigate whether re-triggering ready and load events will cause issues
+	 * @param {DOMElement} context Element that the controller will be bound to and use as it's scope
+	 * @returns {Controller} Instance of the controller object
 	 */
 	constructor(context) {
 		console.log('controller.constructor()');
@@ -162,18 +166,18 @@ export class Controller {
 	}
 
 	/**
-	 * @param {DOMElement} element Element that the constructor object uses for scoping
-	 *
 	 * This function is designed to be overriden, allowing sub classes to perform thier own initialization after the core controller initialization has taken place in the constructor without having to explicitly call the constructor.
+	 *
+	 * @param {DOMElement} element Element that the constructor object uses for scoping
 	 */
 	initialize(element) {
 		console.log('controller.initialize()');
 	}
 
 	/**
-	 * @param {Boolean} isIncludeElement Defines whether the DOM element that the controller is attached to should also be destroyed.
-	 *
 	 * This function destroys the instance of the controller, as well as the DOM element if defined.
+	 *
+	 * @param {Boolean} isIncludeElement Defines whether the DOM element that the controller is attached to should also be destroyed.
 	 */
 	destroy(isIncludeElement = false) {
 		console.log('controller.destroy()');
