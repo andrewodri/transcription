@@ -6,14 +6,14 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
 
 var fs = _interopRequire(require("fs"));
 
-var Transformer = function Transformer(data) {
-  _classCallCheck(this, Transformer);
+var JsonTransformer = function JsonTransformer(data, jsonFile) {
+  _classCallCheck(this, JsonTransformer);
 
   var json = JSON.stringify(data[0][0]);
 
-  fs.writeFileSync(htmlFile, json);
+  fs.writeFileSync(jsonFile, json);
 
   //console.log(template({data: data[0][0]}));
 };
 
-module.exports = Transformer;
+module.exports = JsonTransformer;

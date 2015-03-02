@@ -19,6 +19,7 @@
     "url": "https://github.com/affirmix/transcription.git"
   },
   "devDependencies": {
+    "minimist": "^1.1.0",
     "babel": "^4.6.1",
     "gulp": "^3.8.11",
     "gulp-babel": "^4.0.0",

@@ -6,14 +6,16 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
 
 var fs = _interopRequire(require("fs"));
 
-var Transformer = function Transformer(data) {
-  _classCallCheck(this, Transformer);
+var jade = _interopRequire(require("jade"));
 
-  var json = JSON.stringify(data[0][0]);
+var HtmlTransformer = function HtmlTransformer(data, htmlFile, jadeFile) {
+  _classCallCheck(this, HtmlTransformer);
 
-  fs.writeFileSync(htmlFile, json);
+  var template = jade.compileFile(jadeFile);
+
+  fs.writeFileSync(htmlFile, template({ data: data[0][0] }));
 
   //console.log(template({data: data[0][0]}));
 };
 
-module.exports = Transformer;
+module.exports = HtmlTransformer;
