@@ -8,7 +8,9 @@ Transcription is an ECMAScript 6 (ES6) documentation generator designed to provi
 
 2. *Dynamically linked projects and classes*. One feature missing from many JavaScript documentation generators in linking to projects and classes outside of the scope of one single file. This is a feature that Transcription will aim to provide.
 
-3. *Gulp npm module*. After basic functionality has been implemented and tested, Transcription should be easy to integrate into your build system.
+3. *Verify AST structures against JSDoc params*. Becuase we have a proper AST object to compare with JSDoc doclets, an analysis will be peformed to verfiy that your comments matches the elements they are describing. This will developers track down any comments that become out of date, and inconsistencies that develop.
+
+4. *Gulp npm module*. After basic functionality has been implemented and tested, Transcription should be easy to integrate into your build system.
 
 ## How can I use Transcription?
 
