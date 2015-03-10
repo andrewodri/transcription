@@ -21,6 +21,6 @@ You can see Transcription in action on your own system by following these steps:
 3. `npm install`
 4. `gulp`
 5. One of the following commands: (For JSON, Markdown, and HTML respectively)
-  * ~~`node dist/app.js ./input -f json -o ./output`~~ *[Migrating to multiple file support]*
-  * ~~`node dist/app.js ./input -f md -o ./output`~~ *[Migrating to multiple file support]*
+  * `node dist/app.js ./input -f json -o ./output.json`
+  * `node dist/app.js ./input -f md -o ./output`
   * `node dist/app.js ./input -f html -t ./jade -o ./output`
