@@ -9,11 +9,7 @@ var fs = _interopRequire(require("fs"));
 var JsonTransformer = function JsonTransformer(data, jsonFile) {
   _classCallCheck(this, JsonTransformer);
 
-  var json = JSON.stringify(data[0][0]);
-
-  fs.writeFileSync(jsonFile, json);
-
-  //console.log(template({data: data[0][0]}));
+  fs.writeFileSync(jsonFile, JSON.stringify(data));
 };
 
 module.exports = JsonTransformer;

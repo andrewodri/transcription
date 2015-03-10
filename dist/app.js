@@ -20,10 +20,10 @@ var fileManager = new FileManager(args._[0]);
 
 switch (args.f) {
   case "json":
-    //let json = new JsonTransformer(code, args.o);
+    var json = new JsonTransformer(fileManager.files, args.o);
     break;
   case "markdown":
-    //let md = new MarkdownTransformer(code, args.o);
+    var md = new MarkdownTransformer(fileManager.files, args.o);
     break;
   case "html":
     var html = new HtmlTransformer(fileManager.files, args.o, args.t);

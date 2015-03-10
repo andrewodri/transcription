@@ -2,15 +2,48 @@ import fs from 'fs';
 import util from 'util';
 
 export default class MarkdownTransformer {
-  constructor(data, mdFile) {
-    let md = this.markdown(data[0][0]);
+  constructor(files, outputDir) {
+    this.outputDir = outputDir;
 
-    fs.writeFileSync(mdFile, md);
+    this.buildIndex(files);
 
-    //console.log(template({data: data[0][0]}));
+    for(let file of files){
+      for(let classObject of file.classes){
+        this.buildClass(classObject);
+      }
+    }
   }
 
-  markdown(data) {
+  buildIndex(files) {
+    let result = "";
+
+    let classHeading = "# %s\n\n";
+    let methodWrapper = "* %s(%s)\n";
+    let parameter = "[%s](%s)";
+
+    for(let file of files){
+      for(let classObject of file.classes){
+        result += util.format(classHeading, classObject.name);
+
+        for(let method of classObject.methods){
+          let params = "";
+          for(let tag of method.comments.tags){
+            if(tag.title == "param"){
+              params += util.format(parameter, tag.name, '');
+            }
+          }
+
+          result += util.format(methodWrapper, method.name, params);
+        }
+
+        result += '\n';
+      }
+    }
+
+    fs.writeFileSync(this.outputDir + '/index.md', result);
+  }
+
+  buildClass(classObject) {
     let result = "";
 
     let classHeading = "# %s\n\n";
@@ -19,10 +52,10 @@ export default class MarkdownTransformer {
     let tableWrapper = "<table>%s</table>\n\n";
     let parameter = "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>";
 
-    result += util.format(classHeading, data.name);
-    result += util.format(paragraph, data.comments.description);
+    result += util.format(classHeading, classObject.name);
+    result += util.format(paragraph, classObject.comments.description);
 
-    for(let method of data.methods){
+    for(let method of classObject.methods){
       result += util.format(methodHeading, method.name);
       result += util.format(paragraph, method.comments.description);
 
@@ -34,6 +67,6 @@ export default class MarkdownTransformer {
       result += util.format(tableWrapper, table);
     }
 
-    return result;
+    fs.writeFileSync(this.outputDir + '/' + classObject.name + '.md', result);
   }
 }
