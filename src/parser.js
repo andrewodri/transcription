@@ -25,7 +25,13 @@ export default class Parser {
 
     //console.log(comments);
 
-    return this.transform(this.ast.body);
+    let transformed = this.transform(this.ast.body);
+
+    return {
+      path: filePath,
+      imports: transformed.filter((element) => element.type == 'import'),
+      classes: transformed.filter((element) => element.type == 'export').map((element) => element.variables[0])
+    }
   }
 
   transform(parent){
@@ -45,11 +51,12 @@ export default class Parser {
           Object.defineProperty(node.declaration, "export", { value: true });
           Object.defineProperty(node.declaration, "default", { value: node.default });
 
-          result.push(
-            this.transform([
+          result.push({
+            type: 'export',
+            variables: this.transform([
               node.declaration
             ])
-          );
+          });
           break;
         case 'ClassDeclaration':
           result.push({

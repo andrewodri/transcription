@@ -41,7 +41,19 @@ var Parser = (function () {
 
     //console.log(comments);
 
-    return this.transform(this.ast.body);
+    var transformed = this.transform(this.ast.body);
+
+    return {
+      path: filePath,
+      imports: transformed.filter(function (element) {
+        return element.type == "import";
+      }),
+      classes: transformed.filter(function (element) {
+        return element.type == "export";
+      }).map(function (element) {
+        return element.variables[0];
+      })
+    };
   }
 
   _prototypeProperties(Parser, null, {
@@ -71,7 +83,10 @@ var Parser = (function () {
                 Object.defineProperty(node.declaration, "export", { value: true });
                 Object.defineProperty(node.declaration, "default", { value: node["default"] });
 
-                result.push(this.transform([node.declaration]));
+                result.push({
+                  type: "export",
+                  variables: this.transform([node.declaration])
+                });
                 if (_iterator["return"]) _iterator["return"]();
                 break;
               case "ClassDeclaration":

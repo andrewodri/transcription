@@ -1,0 +1,52 @@
+<html><head></head><body><h1 class="public">Controller</h1><p><p>This class is the base controller in TungstenJS. A defaults property is provided to be overridden and merged allowing you to define common selectors, classes, and strings that will be referenced throughout your controller.</p>
+
+<p>You can also bind element events to controller functions by defining a new entry in the listeners property. See the demo application for an example implementation.</p>
+
+<p>The event binding system and other elements of functionality are inspired by <a href="http://javascriptmvc.com/">JavascriptMVC&#39;s</a> <a href="http://javascriptmvc.com/docs/can.Control.html">implementation of the controller</a>.</p></p><h3>Inheritance Hierarchy</h3><p>Object</p><h2 id="#method-classReference" class="static getter">classReference</h2><p><p>This returns a reference that whatever the top-most sub-class is, which comes in handy when managing instances in static functions on classes that are designed to be extended.</p></p><h3>Properties</h3><table><tr id="#method-classReference-param-undefined"><td>static</td><td></td><td></td><td></td></tr><tr id="#method-classReference-param-classReference"><td>property</td><td>classReference</td><td>Class</td><td>Reference to the current class</td></tr></table><h2 id="#method-classReference" class="getter">classReference</h2><p><p>This returns a reference that whatever the top-most sub-class is, which comes in handy when managing instances in static functions on classes that are designed to be extended.</p></p><h3>Properties</h3><table><tr id="#method-classReference-param-classReference"><td>property</td><td>classReference</td><td>Class</td><td>Reference to the current class</td></tr></table><h2 id="#method-defaults" class="getter">defaults</h2><p><p>Defines default properties that will be merged into each controller instance by default.</p>
+
+<p>Due to the lack of support for class properties in ECMAScript 6, properties have been defined in getters, which are then merged with thier super functions by the constructor.</p>
+
+<p>Below is an example of a standard override of defaults that merges with it&#39;s sub class:</p>
+
+<p><code>
+get defaults() {
+	return {
+		selectors : {
+			displayElement : &#39;.display&#39;
+			,searchField : &#39;.search-field&#39;
+			,searchButton : &#39;.search-button&#39;
+		}
+		,classes : {
+			active : &#39;active&#39;
+			,selected : &#39;selected&#39;
+			,loading : &#39;loading&#39;
+		}
+	};
+}
+</code></p>
+
+<p>These properties can be accessed straight from controller instance itself. For example, to access selectors.displayElement defined in the above example, you would reference it with <code>controllerInstance.selectors.displayElement</code>. See the demo application for an example implementation.</p></p><h3>Properties</h3><table><tr id="#method-defaults-param-defaults"><td>property</td><td>defaults</td><td>Object</td><td>The properties of this object will be merged into the controller itself, providing default values for the controller</td></tr></table><h2 id="#method-listeners" class="getter">listeners</h2><p><p>Defines the listener object which will be parsed through and then bound during construction. See the demo application for an example implementation.</p>
+
+<p>Due to the lack of support for class properties in ECMAScript 6, properties have been defined in getters, which are then merged with thier super functions by the constructor.</p>
+
+<p>Below is an example of a standard override of defaults that merges with it&#39;s sub class:</p>
+
+<p><code>
+get listeners() {
+	return [
+		{ selector : &#39;{selectors.searchButton} click&#39;, handler : this.example }
+		,{ selector : &#39;div#identification.classification click&#39;, handler : this.example }
+		,{ selector : &#39;click&#39;, handler : this.example }
+	];
+}
+</code></p></p><h3>Properties</h3><table><tr id="#method-listeners-param-undefined"><td>todo</td><td></td><td></td><td>In each listener object, separate the event from the selector and give it it's own event property</td></tr><tr id="#method-listeners-param-listeners"><td>property</td><td>listeners</td><td>Array</td><td>An array of objects that represent DOM query selectors, events, and callback functions for DOM event binding on the controller</td></tr></table><h2 id="#method-constructor" class="constructor">constructor</h2><p><p>The first thing the contructor does is merge this.defaults and this.listeners with the values defined in each super class. &quot;Private&quot; variables are created for acess within the constructor.</p>
+
+<p>Then, the element property of the controller is set to a jQuery object of the context. This will provide access to the jQuery function easily, and allow for easy referencing through the controller.</p>
+
+<p>Next, the properties in default are also merged into the controller instance.</p>
+
+<p>The listeners property is then parsed, binding all events to the defined functions, and passing them the correct context.</p>
+
+<p>In non-native ECMAScript 6 browsers, the code is often processed after document ready and load events are fired, so if these have been missed, they are triggered again.</p>
+
+<p>After all the processing is complete, the initialize function is called. This allows sub classes to perform thier own initialization after the core controller initialization has taken place in the constructor without having to explicitly call the constructor&#39;s. See the demo application for an example implementation.</p></p><h3>Properties</h3><table><tr id="#method-constructor-param-undefined"><td>todo</td><td></td><td></td><td>Investigate whether re-triggering ready and load events will cause issues</td></tr><tr id="#method-constructor-param-context"><td>param</td><td>context</td><td>DOMElement</td><td>Element that the controller will be bound to and use as it's scope</td></tr><tr id="#method-constructor-param-undefined"><td>returns</td><td></td><td>Controller</td><td>Instance of the controller object</td></tr></table><h2 id="#method-initialize">initialize</h2><p><p>This function is designed to be overriden, allowing sub classes to perform thier own initialization after the core controller initialization has taken place in the constructor without having to explicitly call the constructor.</p></p><h3>Properties</h3><table><tr id="#method-initialize-param-element"><td>param</td><td>element</td><td>DOMElement</td><td>Element that the constructor object uses for scoping</td></tr><tr id="#method-initialize-param-source"><td>param</td><td>source</td><td>Object</td><td>Element that the constructor object uses for scoping</td></tr></table><h2 id="#method-destroy">destroy</h2><p><p>This function destroys the instance of the controller, as well as the DOM element if defined.</p></p><h3>Properties</h3><table><tr id="#method-destroy-param-isIncludeElement"><td>param</td><td>isIncludeElement</td><td>Boolean</td><td>Defines whether the DOM element that the controller is attached to should also be destroyed.</td></tr></table></body></html>

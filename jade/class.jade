@@ -1,0 +1,18 @@
+html
+  head
+  body
+    h1(class=data.isPublic ? "public" : "", class=data.isDefault ? "default" : "")= data.name
+    p!= data.comments.parsed
+    h3 Inheritance Hierarchy
+    p= data.extends ? data.extends : "Object"
+    each method in data.methods
+      h2(id="#method-" + method.name, class=method.isConstructor ? "constructor" : "", class=method.isStatic ? "static" : "", class=method.isGetter ? "getter" : "", class=method.isSetter ? "setter" : "", class=method.isGenerator ? "generator" : "")= method.name
+      p!= method.comments.parsed
+      h3 Properties
+      table
+        each tag in method.comments.tags
+          tr(id="#method-" + method.name + "-param-" + tag.name)
+            td= tag.title
+            td= tag.name
+            td= tag.type ? tag.type.name : ""
+            td= tag.description

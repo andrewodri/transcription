@@ -168,9 +168,10 @@ export class Controller {
 	/**
 	 * This function is designed to be overriden, allowing sub classes to perform thier own initialization after the core controller initialization has taken place in the constructor without having to explicitly call the constructor.
 	 *
-	 * @param {DOMElement} element Element that the constructor object uses for scoping
-	 */
-	initialize(element) {
+	* @param {DOMElement} element Element that the constructor object uses for scoping
+	* @param {Object} source Element that the constructor object uses for scoping
+	*/
+	initialize(element, source) {
 		console.log('controller.initialize()');
 	}
 
