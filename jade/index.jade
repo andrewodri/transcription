@@ -1,27 +1,38 @@
-mixin parameters(classObject, method)
+mixin parameters(classObject, method, methodType)
   - var params = method.comments.tags.filter(function(x){ return x.title == "param" })
   each param, index in params
     if index > 0
       | ,&nbsp;
-    a(href=classObject.name + ".html#method-" + method.name + "-param-" + param.name)= param.name
+    a(href=classObject.name.toLowerCase() + ".html#" + methodType + method.name + "-param-" + param.name)= param.name
 
-.index
+.col-md-4(style="position: fixed")
   dl
   each file in files
     each classObject in file.classes
       dt(class=classObject.isPublic ? "public" : "", class=classObject.isDefault ? "default" : "")
-        a(href=classObject.name + ".html")= classObject.name
+        a(href=classObject.name.toLowerCase() + ".html")= classObject.name
         each method in classObject.methods
+          if method.isStatic
+            - var methodType = "static-"
+          else if method.isGenerator
+            - var methodType = "generator-"
+          else
+            - var methodType = "function-"
+          if method.isGetter
+            - methodType += "getter-"
+          else if method.isSetter
+            - methodType += "setter-"
+
           dd
             if method.isStatic
               | static&nbsp;
+            if method.isGenerator
+              | generator&nbsp;
             if method.isGetter
               | getter&nbsp;
             if method.isSetter
               | setter&nbsp;
-            if method.isGenerator
-              | generator&nbsp;
-            a(href=classObject.name + ".html#method-" + method.name)= method.name
+            a(href=classObject.name.toLowerCase() + ".html#" + methodType + method.name)= method.name
             | (
-            +parameters(classObject, method)
+            +parameters(classObject, method, methodType)
             | )

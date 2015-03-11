@@ -24,6 +24,6 @@ export default class HtmlTransformer {
   buildClass(classObject) {
     let template = jade.compileFile(this.templateDir + '/class.jade');
 
-    fs.writeFileSync(this.outputDir + '/' + classObject.name + '.html', template({data: classObject}));
+    fs.writeFileSync(this.outputDir + '/' + classObject.name.toLowerCase() + '.html', template({data: classObject}));
   }
 }

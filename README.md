@@ -1,4 +1,4 @@
-[![Gitter](https://img.shields.io/badge/gitter-join%20chat%E2%86%92-brightgreen.svg)](https://gitter.im/affirmix/transcription?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
+[![Gitter](https://img.shields.io/badge/gitter-join%20chat%E2%86%92-brightgreen.svg)](https://gitter.im/affirmix/transcription?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge) [![Dependency Status](https://david-dm.org/affirmix/transcription.svg)](https://david-dm.org/affirmix/transcription) [![devDependency Status](https://david-dm.org/affirmix/transcription/dev-status.svg)](https://david-dm.org/affirmix/transcription#info=devDependencies)
 
 ## What is Transcription?
 

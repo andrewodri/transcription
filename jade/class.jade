@@ -4,32 +4,48 @@ html
       code { white-space: pre-wrap; }
       .index { position: fixed; width: 25%; }
       .content { position: relative; margin: 0 0 0 25%; width: 75%; }
-      .method-type { font-weight: normal; }
+    style
+      include ../jspm_packages/github/twbs/bootstrap@3.3.2/css/bootstrap.min.css
+      include ../jspm_packages/github/twbs/bootstrap@3.3.2/css/bootstrap-theme.min.css
+    title= data.name
   body
-    include ../output/index.html
+    .container-fluid
+      .row
+        include ../output/index.html
 
-    .content
-      h1(class=data.isPublic ? "public" : "", class=data.isDefault ? "default" : "")= data.name
-      p!= data.comments.parsed
-      h2 Inheritance Hierarchy
-      p= data.extends ? data.extends : "Object"
-      h2 Functions
-      each method in data.methods
-        h3(id="method-" + method.name, class=method.isConstructor ? "constructor" : "", class=method.isStatic ? "static" : "", class=method.isGetter ? "getter" : "", class=method.isSetter ? "setter" : "", class=method.isGenerator ? "generator" : "")
-          if method.isStatic
-            span.method-type static&nbsp;
-          if method.isGetter
-            span.method-type getter&nbsp;
-          if method.isSetter
-            span.method-type setter&nbsp;
-          if method.isGenerator
-            span.method-type generator&nbsp;
-          | #{method.name}
-        p!= method.comments.parsed
-        - var params = method.comments.tags.filter(function(x){ return x.title == "param" })
-        if params.length > 0
-          h4 Parameters
-          dl
-          each param in params
-            dt(id="method-" + method.name + "-param-" + param.name)= param.name
-              dd= param.description
+        .col-md-8.col-md-offset-4
+          h1(class=data.isPublic ? "public" : "", class=data.isDefault ? "default" : "")= data.name
+          p!= data.comments.parsed
+          h2 Inheritance Hierarchy
+          p= data.extends ? data.extends : "Object"
+          h2 Functions
+          each method in data.methods
+            if method.isStatic
+              - var methodType = "static-"
+            else if method.isGenerator
+              - var methodType = "generator-"
+            else
+              - var methodType = "function-"
+            if method.isGetter
+              - methodType += "getter-"
+            else if method.isSetter
+              - methodType += "setter-"
+
+            h3(id=methodType + method.name, class=method.isConstructor ? "constructor" : "", class=method.isStatic ? "static" : "", class=method.isGetter ? "getter" : "", class=method.isSetter ? "setter" : "", class=method.isGenerator ? "generator" : "")
+              if method.isStatic
+                small static&nbsp;
+              if method.isGetter
+                small getter&nbsp;
+              if method.isSetter
+                small setter&nbsp;
+              if method.isGenerator
+                small generator&nbsp;
+              | #{method.name}
+            p!= method.comments.parsed
+            - var params = method.comments.tags.filter(function(x){ return x.title == "param" })
+            if params.length > 0
+              h4 Parameters
+              dl
+              each param in params
+                dt(id=methodType + method.name + "-param-" + param.name)= param.name
+                  dd= param.description
