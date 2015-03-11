@@ -1,3 +1,5 @@
+[![Gitter](https://img.shields.io/badge/gitter-join%20chat%E2%86%92-brightgreen.svg)](https://gitter.im/affirmix/transcription?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
+
 ## What is Transcription?
 
 Transcription is an ECMAScript 6 (ES6) documentation generator designed to provide JSON, Markdown, and template driven HTML output.
