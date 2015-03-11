@@ -13,8 +13,6 @@ export default class HtmlTransformer {
         this.buildClass(classObject);
       }
     }
-
-    console.log(files);
   }
 
   buildIndex(files) {

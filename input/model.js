@@ -35,6 +35,7 @@ export class Model {
 	 *
 	 * Below is an example of a standard override of services that merges with it's sub class:
 	 *
+	 * ```
 	 *	static get services() {
 	 *		return super.services.merge({
 	 *			create : { method : 'POST', uri : 'https://itunes.apple.com/search?term=${term}', format : 'jsonp' }
@@ -43,6 +44,7 @@ export class Model {
 	 *			,delete : { method : 'DELETE', uri : 'https://itunes.apple.com/search?term=${term}', format : 'jsonp' }
 	 *		});
 	 *	}
+	 * ```
 	 *
 	 * @static
 	 * @property {Object} services Object containing create, find, update, and delete properties that define RESTful service endpoints

@@ -1,20 +1,27 @@
-mixin parameters(method)
-  - var params = method.comments.tags.filter(function(element){return element.title == "param"})
+mixin parameters(classObject, method)
+  - var params = method.comments.tags.filter(function(x){ return x.title == "param" })
   each param, index in params
     if index > 0
       | ,&nbsp;
-    a(href="#method-" + method.name + "-param-" + param.name)= param.name
+    a(href=classObject.name + ".html#method-" + method.name + "-param-" + param.name)= param.name
 
-html
-  head
-  body
-    dl
-    each file in files
-      each classObject in file.classes
-        dt(class=classObject.isPublic ? "public" : "", class=classObject.isDefault ? "default" : "")= classObject.name
+.index
+  dl
+  each file in files
+    each classObject in file.classes
+      dt(class=classObject.isPublic ? "public" : "", class=classObject.isDefault ? "default" : "")
+        a(href=classObject.name + ".html")= classObject.name
         each method in classObject.methods
           dd
-            a(href="#method-" + method.name)= method.name
+            if method.isStatic
+              | static&nbsp;
+            if method.isGetter
+              | getter&nbsp;
+            if method.isSetter
+              | setter&nbsp;
+            if method.isGenerator
+              | generator&nbsp;
+            a(href=classObject.name + ".html#method-" + method.name)= method.name
             | (
-            +parameters(method)
+            +parameters(classObject, method)
             | )

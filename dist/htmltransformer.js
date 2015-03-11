@@ -65,8 +65,6 @@ var HtmlTransformer = (function () {
         }
       }
     }
-
-    console.log(files);
   }
 
   _prototypeProperties(HtmlTransformer, null, {
