@@ -2,6 +2,8 @@
 
 ## What is Transcription?
 
+[![Join the chat at https://gitter.im/affirmix/transcription](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/affirmix/transcription?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Transcription is an ECMAScript 6 (ES6) documentation generator designed to provide JSON, Markdown, and template driven HTML output.
 
 ## What can I expect from Transcription as development continues?
