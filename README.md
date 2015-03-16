@@ -18,12 +18,10 @@ Transcription is an ECMAScript 6 (ES6) documentation generator designed to provi
 
 You can see Transcription in action on your own system by following these steps: (Dependant on Git and Node.js)
 
-1. `git clone https://github.com/affirmix/transcription.git`
-2. `cd transcription`
-3. `npm install`
-4. `jspm install`
-5. `gulp`
-6. One of the following commands: (For JSON, Markdown, and HTML respectively)
-  * `node dist/app.js ./input -f json -o ./output.json`
-  * `node dist/app.js ./input -f md -o ./output`
-  * `node dist/app.js ./input -f html -t ./jade -o ./output`
+1. `npm install transcription`
+2. One of the following commands: (For JSON, Markdown, and HTML respectively)
+  * `transcription --help`
+  * `transcription -f html -i ./input -o ./output`
+  * `transcription -f html -o ./output.html < ./input/controller.js`
+  * `transcription -f html -o < ./input/controller.js > ./output/controller.html`
+  * `transcription -f html -i ./input.html > ./output/controller.js`

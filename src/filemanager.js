@@ -1,38 +1,43 @@
 import fs from 'fs';
 
-import Parser from './parser';
+import JavascriptParser from './javascriptparser';
 
 export default class FileManager {
-  constructor(path) {
-    this.files = [];
-
-    this.processFiles(
-      this.getFiles(path)
-    );
-  }
-
-  getFiles(path) {
-    let files = [];
+  static getFiles(path) {
+    let files = new Map();
     let pathStat = fs.statSync(path);
 
     if(pathStat.isFile()){
-      files.push(path);
+      files.set(
+        path,
+        new JavascriptParser(fs.readFileSync(path, {encoding: 'utf8'}))
+      );
     }else if(pathStat.isDirectory()){
       for(let file of fs.readdirSync(path)){
         if(fs.statSync(path + '/' + file).isFile() && file.match(/\.js$/) !== null){
-          files.push(path + '/' + file);
+          files.set(
+            path + '/' + file,
+            new JavascriptParser(fs.readFileSync(path + '/' + file, {encoding: 'utf8'}))
+          );
         }
       }
     }else{
-      throw new Error("Invalid path supplied to " + this.constructor.name);
+      throw new Error("Invalid input path supplied to " + this.constructor.name);
     }
 
     return files;
   }
 
-  processFiles(files) {
-    for(let file of files){
-      this.files.push(new Parser(file));
+  static writeFiles(files, output) {
+    if(fs.existsSync(output) && fs.statSync(output).isDirectory()){
+      for(let [path, file] of files){
+        fs.writeFileSync(output + '/' + path, file, {encoding: 'utf8'});
+      }
+    }else{
+      for(let [path, file] of files){
+        fs.writeFileSync(output, file, {encoding: 'utf8'});
+        break;
+      }
     }
   }
 }

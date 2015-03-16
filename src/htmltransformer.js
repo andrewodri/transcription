@@ -2,28 +2,23 @@ import fs from 'fs';
 import jade from 'jade';
 
 export default class HtmlTransformer {
-  constructor(files, outputDir, templateDir) {
-    this.outputDir = outputDir;
-    this.templateDir = templateDir;
+  static transform(files, template) {
+    let htmlFiles = new Map();
 
-    this.buildIndex(files);
+    let navTemplate = jade.compileFile(template + '/index.jade');
+    let classTemplate = jade.compileFile(template + '/class.jade');
 
-    for(let file of files){
+    let navigation = navTemplate({files: Array.from(files.values())});
+
+    for(let [path, file] of files){
       for(let classObject of file.classes){
-        this.buildClass(classObject);
+        htmlFiles.set(
+          classObject.name.toLowerCase() + '.html',
+          classTemplate({data: classObject, navigation})
+        );
       }
     }
-  }
 
-  buildIndex(files) {
-    let template = jade.compileFile(this.templateDir + '/index.jade');
-
-    fs.writeFileSync(this.outputDir + '/index.html', template({files}));
-  }
-
-  buildClass(classObject) {
-    let template = jade.compileFile(this.templateDir + '/class.jade');
-
-    fs.writeFileSync(this.outputDir + '/' + classObject.name.toLowerCase() + '.html', template({data: classObject}));
+    return htmlFiles;
   }
 }

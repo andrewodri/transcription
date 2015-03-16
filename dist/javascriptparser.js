@@ -16,16 +16,13 @@ var doctrine = _interopRequire(require("doctrine"));
 
 var markdown = _interopRequire(require("markdown"));
 
-var Parser = (function () {
-  function Parser(filePath) {
-    _classCallCheck(this, Parser);
-
-    this.doc = fs.readFileSync(filePath, {
-      encoding: "utf8"
-    });
+var JavascriptParser = (function () {
+  function JavascriptParser(data) {
+    _classCallCheck(this, JavascriptParser);
 
     var comments = [];
-    this.ast = acorn.parse(this.doc, {
+
+    this.ast = acorn.parse(data, {
       ecmaVersion: 6,
       onComment: function (block, text, start, end) {
         if (block) comments.push({ block: block, text: text, start: start, end: end });
@@ -41,24 +38,21 @@ var Parser = (function () {
 
     //console.log(comments);
 
-    var transformed = this.transform(this.ast.body);
+    var transformed = this.getJavascript(this.ast.body);
 
-    return {
-      path: filePath,
-      imports: transformed.filter(function (element) {
-        return element.type == "import";
-      }),
-      classes: transformed.filter(function (element) {
-        return element.type == "export";
-      }).map(function (element) {
-        return element.variables[0];
-      })
-    };
+    this.imports = transformed.filter(function (element) {
+      return element.type == "import";
+    });
+    this.classes = transformed.filter(function (element) {
+      return element.type == "export";
+    }).map(function (element) {
+      return element.variables[0];
+    });
   }
 
-  _prototypeProperties(Parser, null, {
-    transform: {
-      value: function transform(parent) {
+  _prototypeProperties(JavascriptParser, null, {
+    getJavascript: {
+      value: function getJavascript(parent) {
         var result = [];
         var position = 0;
 
@@ -85,7 +79,7 @@ var Parser = (function () {
 
                 result.push({
                   type: "export",
-                  variables: this.transform([node.declaration])
+                  variables: this.getJavascript([node.declaration])
                 });
                 if (_iterator["return"]) _iterator["return"]();
                 break;
@@ -95,7 +89,7 @@ var Parser = (function () {
                   name: node.id.name,
                   "extends": node.superClass !== null ? node.superClass.name : null,
                   comments: this.getComments(position, node.start),
-                  methods: this.transform(node.body.body),
+                  methods: this.getJavascript(node.body.body),
                   isPublic: node.hasOwnProperty("export") && node["export"],
                   isDefault: node.hasOwnProperty("default") && node["default"]
                 });
@@ -163,7 +157,7 @@ var Parser = (function () {
     }
   });
 
-  return Parser;
+  return JavascriptParser;
 })();
 
-module.exports = Parser;
+module.exports = JavascriptParser;

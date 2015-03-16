@@ -4,14 +4,11 @@ import acorn from 'acorn';
 import doctrine from 'doctrine';
 import markdown from 'markdown';
 
-export default class Parser {
-  constructor(filePath) {
-    this.doc = fs.readFileSync(filePath, {
-      encoding: 'utf8'
-    });
-
+export default class JavascriptParser {
+  constructor(data) {
     let comments = [];
-    this.ast = acorn.parse(this.doc, {
+
+    this.ast = acorn.parse(data, {
       ecmaVersion: 6,
       onComment: (block, text, start, end) => { if(block) comments.push({block, text, start, end}) }
     });
@@ -25,16 +22,13 @@ export default class Parser {
 
     //console.log(comments);
 
-    let transformed = this.transform(this.ast.body);
+    let transformed = this.getJavascript(this.ast.body);
 
-    return {
-      path: filePath,
-      imports: transformed.filter((element) => element.type == 'import'),
-      classes: transformed.filter((element) => element.type == 'export').map((element) => element.variables[0])
-    }
+    this.imports = transformed.filter((element) => element.type == 'import');
+    this.classes = transformed.filter((element) => element.type == 'export').map((element) => element.variables[0]);
   }
 
-  transform(parent){
+  getJavascript(parent){
     let result = [];
     let position = 0;
 
@@ -53,7 +47,7 @@ export default class Parser {
 
           result.push({
             type: 'export',
-            variables: this.transform([
+            variables: this.getJavascript([
               node.declaration
             ])
           });
@@ -64,7 +58,7 @@ export default class Parser {
             name: node.id.name,
             extends: node.superClass !== null ? node.superClass.name : null,
             comments: this.getComments(position, node.start),
-            methods: this.transform(node.body.body),
+            methods: this.getJavascript(node.body.body),
             isPublic: node.hasOwnProperty('export') && node.export,
             isDefault: node.hasOwnProperty('default') && node.default
           });

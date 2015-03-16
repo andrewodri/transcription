@@ -2,26 +2,31 @@ import fs from 'fs';
 import util from 'util';
 
 export default class MarkdownTransformer {
-  constructor(files, outputDir) {
-    this.outputDir = outputDir;
+  static transform(files) {
+    let markdownFiles = new Map();
 
-    this.buildIndex(files);
+    let navigation = MarkdownTransformer.buildNavigation(files);
 
-    for(let file of files){
+    for(let [path, file] of files){
       for(let classObject of file.classes){
-        this.buildClass(classObject);
+        markdownFiles.set(
+          classObject.name.toLowerCase() + '.md',
+          navigation + MarkdownTransformer.buildClass(classObject)
+        );
       }
     }
+
+    return markdownFiles;
   }
 
-  buildIndex(files) {
+  static buildNavigation(files) {
     let result = "";
 
-    let classHeading = "# %s\n\n";
-    let methodWrapper = "* %s(%s)\n";
+    let classHeading = "* %s\n";
+    let methodWrapper = "    * %s(%s)\n";
     let parameter = "[%s](%s)";
 
-    for(let file of files){
+    for(let [path, file] of files){
       for(let classObject of file.classes){
         result += util.format(classHeading, classObject.name);
 
@@ -40,10 +45,10 @@ export default class MarkdownTransformer {
       }
     }
 
-    fs.writeFileSync(this.outputDir + '/index.md', result);
+    return result;
   }
 
-  buildClass(classObject) {
+  static buildClass(classObject) {
     let result = "";
 
     let classHeading = "# %s\n\n";
@@ -67,6 +72,6 @@ export default class MarkdownTransformer {
       result += util.format(tableWrapper, table);
     }
 
-    fs.writeFileSync(this.outputDir + '/' + classObject.name + '.md', result);
+    return result;
   }
 }

@@ -1,18 +1,15 @@
 html
   head
-    style.
-      code { white-space: pre-wrap; }
-      .index { position: fixed; width: 25%; }
-      .content { position: relative; margin: 0 0 0 25%; width: 75%; }
     style
       include ../jspm_packages/github/twbs/bootstrap@3.3.2/css/bootstrap.min.css
       include ../jspm_packages/github/twbs/bootstrap@3.3.2/css/bootstrap-theme.min.css
+    style.
+      code { display: inline-block; white-space: pre-wrap; overflow-x: scroll; }
+      @media (min-width: 992px) { .navigation { position: fixed; } }
     title= data.name
   body
-    .container-fluid
-      .row
-        include ../output/index.html
-
+    .container
+      .row!= navigation
         .col-md-8.col-md-offset-4
           h1(class=data.isPublic ? "public" : "", class=data.isDefault ? "default" : "")= data.name
           p!= data.comments.parsed
