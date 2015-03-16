@@ -1,6 +1,6 @@
 {
   "name": "transcription",
-  "version": "0.2.1",
+  "version": "0.2.0",
   "description": "Documentation generator for ES6.",
   "keywords": [
     "transcription",
